@@ -1,15 +1,21 @@
-const express = require('express')
-const server = express()
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+
+const io = (module.exports.io = require('socket.io')(server));
+const mongoose = require('mongoose');
+
 
 const user_routes = require('./routes/user')
 const sesssion_routes = require('./routes/session')
 
+
 require ('custom-env').env()
 
-server.use('/users', user_routes)
-server.use('/sessions', sesssion_routes)
+app.use('/users', user_routes)
+app.use('/sessions', sesssion_routes)
 
-server.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send("Server On")
 })
 
@@ -23,5 +29,14 @@ server.get('/', (req, res) => {
 
 // db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+// app.use(express.static(__dirname + '/../../build'));
 
-server.listen(process.env.APP_PORT)
+const SocketManager = require('./socket/SocketManager');
+
+io.on('connection', SocketManager);
+
+
+const PORT = process.env.PORT || 3231;
+server.listen(PORT, () => {
+    console.log('Connected to port:', PORT);
+  });
