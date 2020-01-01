@@ -8,5 +8,6 @@ module.exports = socket => {
 
     socket.on("login", (data) => {
         console.log(data)
+        socket.emit("rowDice", data );
     })
 };
