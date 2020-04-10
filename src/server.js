@@ -1,24 +1,21 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const server = require('http').Server(app);
+const server = require("http").Server(app);
 
-const io = (module.exports.io = require('socket.io')(server));
-const mongoose = require('mongoose');
+const io = (module.exports.io = require("socket.io")(server));
+const mongoose = require("mongoose");
 
+const user_routes = require("./routes/user");
+const sesssion_routes = require("./routes/session");
 
-const user_routes = require('./routes/user')
-const sesssion_routes = require('./routes/session')
+require("custom-env").env();
 
+app.use("/users", user_routes);
+app.use("/sessions", sesssion_routes);
 
-require ('custom-env').env()
-
-app.use('/users', user_routes)
-app.use('/sessions', sesssion_routes)
-
-app.get('/', (req, res) => {
-    res.send("Server On")
-})
-
+app.get("/", (req, res) => {
+  res.send("Server On");
+});
 
 // var mongoose = require('mongoose');
 
@@ -31,12 +28,11 @@ app.get('/', (req, res) => {
 
 // app.use(express.static(__dirname + '/../../build'));
 
-const SocketManager = require('./socket/SocketManager');
+const SocketManager = require("./socket/SocketManager");
 
-io.on('connection', SocketManager);
+io.on("connection", SocketManager);
 
-
-const PORT = process.env.PORT || 3231;
+const PORT = process.env.PORT || 8081;
 server.listen(PORT, () => {
-    console.log('Connected to port:', PORT);
-  });
+  console.log("Connected to port:", PORT);
+});
