@@ -32,7 +32,7 @@ const SocketManager = require("./socket/SocketManager");
 
 io.on("connection", SocketManager);
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.APP_PORT || 8081;
 server.listen(PORT, () => {
   console.log("Connected to port:", PORT);
 });
