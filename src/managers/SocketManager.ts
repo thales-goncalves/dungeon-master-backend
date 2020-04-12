@@ -1,4 +1,4 @@
-const io = require("../server.ts").io;
+const io = require("../Server.ts").io;
 
 let connectedUsers = {};
 
